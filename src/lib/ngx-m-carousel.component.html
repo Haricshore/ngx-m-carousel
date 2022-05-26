@@ -1,0 +1,10 @@
+<div (mouseenter)="onHover()" (mouseleave)="onLeave()" class="main" [style.width]="width" [style.height]="height">
+    <div [@slide]="{value: slide, params: {translateValue: x}}" #carousel id="carousel" class="carousel">
+        <img *ngFor="let img of images" [src]="img">
+    </div>
+    <div *ngIf="indicators" class="indicators">
+        <ol class="carousel-buttons">
+            <li *ngFor="let img of images; let i = index" (click)="goTo(i)" [class.active]="x===i*100"></li>
+        </ol>
+    </div>
+</div>
