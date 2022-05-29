@@ -1,5 +1,5 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'ngx-m-carousel',
@@ -43,15 +43,21 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class NgxMCarouselComponent implements OnInit {
 
+  @ViewChild("carousel", { read: ElementRef }) carousel!: ElementRef;
+
   @Input() images: Array<String> = [];
   @Input() delay: number = 5000;
   @Input() pauseOnHover: boolean = false;
   @Input() width: String = '100%';
   @Input() height: String = '100%';
   @Input() indicators: boolean = true;
+  @Input() controls: boolean = true;
+  @Input() clickToFullScreen: boolean = true;
+  @Input() preserveRatioOnFullScreen: boolean = false;
   slide: string = 'slideZero';
   x: number = 0;
-  handler:any;
+  handler: any;
+  isFullScreen: boolean = false;
 
   ngOnInit() {
     this.toggle();
@@ -70,7 +76,8 @@ export class NgxMCarouselComponent implements OnInit {
     }, this.delay);
   }
 
-  goTo(x: number) {
+  goTo(event: Event, x: number) {
+    event.stopPropagation();
     this.x = x * 100;
     this.slide = this.slide == "slideOne" ? "slideTwo" : "slideOne";
     window.clearTimeout(this.handler);
@@ -78,12 +85,37 @@ export class NgxMCarouselComponent implements OnInit {
     this.onHover();
   }
 
-  onHover(){
-    if(this.pauseOnHover)window.clearTimeout(this.handler);
+  onHover() {
+    if (this.pauseOnHover) window.clearTimeout(this.handler);
   }
 
-  onLeave(){
-    if(this.pauseOnHover)this.toggle();
+  onLeave() {
+    if (this.pauseOnHover) this.toggle();
+  }
+
+  openFullscreen() {
+    if (this.clickToFullScreen) {
+      this.isFullScreen = true;
+      if (this.carousel?.nativeElement.requestFullscreen) {
+        this.carousel?.nativeElement.requestFullscreen();
+      } else if (this.carousel?.nativeElement.webkitRequestFullscreen) { /* Safari */
+        this.carousel?.nativeElement.webkitRequestFullscreen();
+      } else if (this.carousel?.nativeElement.msRequestFullscreen) { /* IE11 */
+        this.carousel?.nativeElement.msRequestFullscreen();
+      }
+    }
+  }
+
+  closeFullScreen(event: Event) {
+    event.stopPropagation();
+    this.isFullScreen = false;
+    if (this.isFullScreen && document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if ((document as any).webkitExitFullscreen) { /* Safari */
+      (document as any).webkitExitFullscreen();
+    } else if ((document as any).msExitFullscreen) { /* IE11 */
+      (document as any).msExitFullscreen();
+    }
   }
 
 }

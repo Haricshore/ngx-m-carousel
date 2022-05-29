@@ -1,6 +1,6 @@
 {
   "name": "ngx-m-carousel",
-  "version": "0.0.4",
+  "version": "0.0.7",
   "author": {"name": "Hari Haran", "email": "haricshore@gmail.com"},
   "peerDependencies": {
     "@angular/common": "^13.3.0",

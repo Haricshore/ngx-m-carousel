@@ -66,7 +66,7 @@ PROPERTIES
 
 
 # Thank me!
-Thank you for downloading this library. If this library helps you or if you have any queries/suggestion please write it to my email.
+Thank you for downloading this library. If this library helps you or if you have any queries/suggestion please write it to my email ```haricshore@gmail.com```.
 
 # Missing Features?
-If you need any missing feature or if you have any complaint please write it to my email.
+If you need any missing feature or if you have any complaint please write it to my email ```haricshore@gmail.com```.
